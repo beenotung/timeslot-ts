@@ -1,6 +1,6 @@
 {
   "name": "timeslot-ts",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Whitelist and blacklist timeslots for booking/scheduling system",
   "keywords": [
     "timeslot",
