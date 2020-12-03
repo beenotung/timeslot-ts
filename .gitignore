@@ -1,0 +1,12 @@
+# npm
+node_modules/
+package-lock.json
+*.tgz
+
+# built output
+*.js
+*.js.map
+*.d.ts
+
+# IDE
+.idea/

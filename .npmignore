@@ -1,0 +1,8 @@
+# tests
+*.spec.ts
+
+# build config
+tsconfig.json
+
+# IDE
+.idea

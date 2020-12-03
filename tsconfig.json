@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "commonjs",
+    "declaration": true,
+    "sourceMap": true,
+    "target": "es5",
+    "allowJs": false
+  },
+  "exclude": [
+    "*.spec.ts"
+  ]
+}
