@@ -26,3 +26,5 @@ let canBook = isAvailable(slots, {
 
 console.log(canBook) // true
 ```
+
+More usage examples can refer to [core.spec.ts](./core.spec.ts)
