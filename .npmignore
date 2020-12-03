@@ -1,8 +1,17 @@
+# npm
+pnpm-lock.yaml
+
 # tests
 *.spec.ts
+jest.config.js
 
 # build config
 tsconfig.json
+tslint.json
+.editorconfig
+.prettierrc
+.prettierignore
+*.tgz
 
 # IDE
 .idea
