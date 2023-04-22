@@ -27,12 +27,13 @@
   },
   "homepage": "https://github.com/beenotung/timeslots#readme",
   "scripts": {
-    "format": "prettier --write \"*.ts\"",
+    "format": "prettier --write \"*.ts\" && format-json-cli",
     "build": "tsc -p .",
     "test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^26.0.16",
+    "format-json-cli": "^1.0.2",
     "jest": "^26.6.3",
     "prettier": "^2.2.0",
     "ts-jest": "^26.4.4",
