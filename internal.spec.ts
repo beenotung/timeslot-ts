@@ -1,5 +1,6 @@
 import { indexToStr, strToIndex } from './internal'
 import { MINUTE, SECOND } from './helpers'
+import { expect } from 'chai'
 
 describe('strToIndex TestSuit', () => {
   strToIndex_test()
@@ -9,7 +10,7 @@ function strToIndex_test() {
   function test(str: string, interval: number, expected: number) {
     it(`should handle '${str}' at interval ${interval}`, () => {
       let got = strToIndex(str, interval)
-      expect(got).toEqual(expected)
+      expect(got).to.equals(expected)
     })
   }
 
@@ -25,7 +26,7 @@ function timeToStr_test() {
     it(`should handle at interval ${interval}`, () => {
       let time = strToIndex(str, interval)
       let res = indexToStr(time, interval)
-      expect(res).toEqual(expected)
+      expect(res).to.equals(expected)
     })
   }
 

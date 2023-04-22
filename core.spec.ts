@@ -1,5 +1,6 @@
 import { compactSlots, isAvailable } from './core'
 import { flattenSlots, MINUTE, StartEnd } from './helpers'
+import { expect } from 'chai'
 
 describe('compactSlots TestSuit', () => {
   compactSlots_test()
@@ -18,7 +19,7 @@ function compactSlots_test() {
         interval: MINUTE,
       })
       let got = res.map(({ start, end }) => [start, end])
-      expect(got).toEqual(expected)
+      expect(got).to.deep.equals(expected)
       if (JSON.stringify(got) !== JSON.stringify(expected)) {
         console.log('failed', {
           name,
@@ -85,7 +86,7 @@ function isAvailable_test() {
   ) {
     it(`should ${expected ? 'accept' : 'reject'} ${name}`, () => {
       let slots = flattenSlots({ whitelistSlots: availableSlots })
-      expect(isAvailable(slots, bookingSlot)).toBe(expected)
+      expect(isAvailable(slots, bookingSlot)).to.equals(expected)
     })
   }
 
