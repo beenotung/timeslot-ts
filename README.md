@@ -1,10 +1,11 @@
 # timeslot-ts
 
 Whitelist and blacklist timeslots for booking/scheduling system
-  
-[![npm Package Version](https://img.shields.io/npm/v/timeslot-ts.svg?maxAge=2592000)](https://www.npmjs.com/package/timeslot-ts)
+
+[![npm Package Version](https://img.shields.io/npm/v/timeslot-ts.svg)](https://www.npmjs.com/package/timeslot-ts)
 
 ## Example
+
 ```typescript
 import { flattenSlots, isAvailable, MINUTE } from 'timeslot-ts'
 
