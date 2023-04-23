@@ -6,6 +6,7 @@
     "timeslot",
     "booking",
     "scheduling",
+    "quota",
     "blacklist",
     "whitelist",
     "utils"

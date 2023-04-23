@@ -1,5 +1,5 @@
 import { compactSlots, isAvailable } from './core'
-import { flattenSlots, MINUTE, StartEnd } from './helpers'
+import { flattenSlots, HOUR, MINUTE, StartEnd } from './helpers'
 import { expect } from 'chai'
 
 describe('compactSlots TestSuit', () => {
@@ -122,3 +122,67 @@ function isAvailable_test() {
     false,
   )
 }
+
+describe('quota TestSuit', () => {
+  it('quota should default to 1', () => {
+    let slots = flattenSlots({
+      whitelistSlots: [{ start: '09:00', end: '10:00' }],
+      interval: HOUR,
+    })
+    expect(slots[8]).to.equals(0)
+    expect(slots[9]).to.equals(1)
+    expect(slots[10]).to.equals(0)
+  })
+  it('quota should be customizable', () => {
+    let slots = flattenSlots({
+      whitelistSlots: [{ start: '09:00', end: '10:00', quota: 2 }],
+      interval: HOUR,
+    })
+    expect(slots[8]).to.equals(0)
+    expect(slots[9]).to.equals(2)
+    expect(slots[10]).to.equals(0)
+  })
+  context('multiple booking sharing the same slot', () => {
+    context('when having enough quota', () => {
+      function test(title: string, quota: number | undefined) {
+        it(title, () => {
+          let slots = flattenSlots({
+            whitelistSlots: [{ start: '09:00', end: '10:00', quota }],
+            interval: MINUTE,
+          })
+          expect(isAvailable(slots, { start: '09:00', end: '10:00', quota })).to
+            .be.true
+        })
+      }
+      test('default quota', undefined)
+      test('1 quota', 1)
+      test('2 quota', 2)
+    })
+    context('when having not enough quota', () => {
+      function test(
+        title: string,
+        having_quota: number | undefined,
+        booking_quota: number | undefined,
+      ) {
+        it(title, () => {
+          let slots = flattenSlots({
+            whitelistSlots: [
+              { start: '09:00', end: '10:00', quota: having_quota },
+            ],
+            interval: MINUTE,
+          })
+          expect(
+            isAvailable(slots, {
+              start: '09:00',
+              end: '10:00',
+              quota: booking_quota,
+            }),
+          ).to.be.false
+        })
+      }
+      test('default quota', undefined, 2)
+      test('1 quota', 1, 2)
+      test('2 quota', 2, 3)
+    })
+  })
+})

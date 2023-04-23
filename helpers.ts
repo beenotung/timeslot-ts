@@ -1,12 +1,16 @@
+import { Slots } from './core'
 import { indexToStr, strToIndex } from './internal'
 
 export const SECOND = 1000
 export const MINUTE = SECOND * 60
+export const HOUR = MINUTE * 60
 export const DefaultInterval = MINUTE
+export const DefaultQuota = 1
 
 export type StartEnd = {
   start: string
   end: string
+  quota?: number
 }
 export type BW = 'black' | 'white'
 
@@ -26,7 +30,7 @@ export type Options = {
   priority?: BW // when the blacklist and whitelist conflict, which one to favour? default is white
 }
 
-export function mergeSlots(slots: boolean[], options: Options): StartEnd[] {
+export function mergeSlots(slots: Slots, options: Options): StartEnd[] {
   const INTERVAL = options.interval || DefaultInterval
   const START = strToIndex(FIRST_TIME, INTERVAL)
   const END = strToIndex(LAST_TIME, INTERVAL)
@@ -37,7 +41,7 @@ export function mergeSlots(slots: boolean[], options: Options): StartEnd[] {
   let end: number
   let isFullDay = true
   for (let i = START; i <= END; i++) {
-    isFullDay = isFullDay && slots[i]
+    isFullDay = isFullDay && slots[i] > 0
     if (mode === Mode.find_start && slots[i]) {
       start = i
       mode = Mode.find_end
@@ -73,7 +77,12 @@ export function isSameStartEnd(a: StartEnd, b: StartEnd) {
   return a.start === b.start && a.end === b.end
 }
 
-export function flattenSlots(options: Options): boolean[] {
+enum SlotType {
+  black = 1,
+  white = 2,
+}
+
+export function flattenSlots(options: Options): Slots {
   const INTERVAL = options.interval || DefaultInterval
   const START = strToIndex(FIRST_TIME, INTERVAL)
   const END = strToIndex(LAST_TIME, INTERVAL)
@@ -81,34 +90,43 @@ export function flattenSlots(options: Options): boolean[] {
   const PRIORITY = options.priority || 'white'
   const FULL_DAY = getFullDay(INTERVAL)
 
-  const slots: boolean[] = new Array(END - START)
+  const slots: Slots = new Array(END - START)
   for (let i = START; i <= END; i++) {
-    slots[i] = DEFAULT_STATE
+    slots[i] = DEFAULT_STATE ? DefaultQuota : 0
   }
 
   if (PRIORITY === 'white') {
-    applySlots(false, options.blacklistSlots)
-    applySlots(true, options.whitelistSlots)
+    applySlots(SlotType.black, options.blacklistSlots)
+    applySlots(SlotType.white, options.whitelistSlots)
   } else {
-    applySlots(true, options.whitelistSlots)
-    applySlots(false, options.blacklistSlots)
+    applySlots(SlotType.white, options.whitelistSlots)
+    applySlots(SlotType.black, options.blacklistSlots)
   }
 
   return slots
 
-  function applySlots(state: boolean, startEnds?: StartEnd[]) {
+  function applySlots(type: SlotType, startEnds?: StartEnd[]) {
     if (!startEnds) {
       return
     }
     for (const startEnd of startEnds) {
+      const quota = startEnd.quota ?? DefaultQuota
+      let start: number
+      let end: number
       if (isSameStartEnd(startEnd, FULL_DAY)) {
-        slots.fill(state)
-        return
+        start = 0
+        end = slots.length
+      } else {
+        start = strToIndex(startEnd.start, INTERVAL)
+        end = strToIndex(startEnd.end, INTERVAL)
       }
-      const start = strToIndex(startEnd.start, INTERVAL)
-      const end = strToIndex(startEnd.end, INTERVAL)
       for (let i = start; i < end; i++) {
-        slots[i] = state
+        let slot = slots[i] || 0
+        if (type === SlotType.black) {
+          slots[i] = slot - quota
+        } else {
+          slots[i] = slot + quota
+        }
       }
     }
   }

@@ -1,5 +1,6 @@
 import {
   DefaultInterval,
+  DefaultQuota,
   flattenSlots,
   isFullDay,
   mergeSlots,
@@ -13,17 +14,23 @@ export function compactSlots(options: Options): StartEnd[] {
   return mergeSlots(slots, options)
 }
 
+export type Slot = number
+
+export type Slots = Slot[]
+
 export function isAvailable(
-  slots: boolean[],
+  slots: Slots,
   options: {
     interval?: number // unit in ms, default is 1 second
     start: string
     end: string
+    quota?: number
   },
 ): boolean {
   const INTERVAL = options.interval || DefaultInterval
   let START = strToIndex(options.start, INTERVAL)
   let END = strToIndex(options.end, INTERVAL)
+  const quota = options.quota || DefaultQuota
 
   if (isFullDay(options, INTERVAL)) {
     START = 0
@@ -31,7 +38,8 @@ export function isAvailable(
   }
 
   for (let i = START; i < END; i++) {
-    if (!slots[i]) {
+    const availableSlot = slots[i] || 0
+    if (availableSlot < quota) {
       return false
     }
   }
