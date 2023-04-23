@@ -51,9 +51,9 @@ function compactSlots_test() {
     ],
     [['03:00', '10:30']],
   )
-  test('fullday', [['00:00', '00:00']], [['00:00', '00:00']])
+  test('full day', [['00:00', '00:00']], [['00:00', '00:00']])
   test(
-    'merged fullday',
+    'merged full day',
     [
       ['00:00', '03:00'],
       ['03:00', '10:30'],
@@ -64,7 +64,7 @@ function compactSlots_test() {
     [['00:00', '24:00']],
   )
   test(
-    'fullday with overlap',
+    'full day with overlap',
     [
       ['00:00', '00:00'],
       ['03:00', '10:30'],

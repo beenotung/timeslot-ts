@@ -1,6 +1,6 @@
 # timeslot-ts
 
-Whitelist and blacklist timeslots for booking/scheduling system
+Whitelist and blacklist time slots for booking/scheduling system
 
 [![npm Package Version](https://img.shields.io/npm/v/timeslot-ts.svg)](https://www.npmjs.com/package/timeslot-ts)
 
