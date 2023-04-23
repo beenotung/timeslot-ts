@@ -22,12 +22,12 @@
   "license": "BSD-2-Clause",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/beenotung/timeslots.git"
+    "url": "git+https://github.com/beenotung/timeslot-ts.git"
   },
   "bugs": {
-    "url": "https://github.com/beenotung/timeslots/issues"
+    "url": "https://github.com/beenotung/timeslot-ts/issues"
   },
-  "homepage": "https://github.com/beenotung/timeslots#readme",
+  "homepage": "https://github.com/beenotung/timeslot-ts#readme",
   "scripts": {
     "format": "prettier --write \"*.ts\" && format-json-cli",
     "build": "tsc -p .",
